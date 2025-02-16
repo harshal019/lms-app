@@ -4,7 +4,6 @@ const router = express.Router();
 const authMiddleware = require("../middlewares/authMidddleware");
 const isLibrarian = require("../helper");
 const Book = require("../models/Book");
-const isLibrarian = require("../helper");
 
 router.get("/", authMiddleware, async (req, res) => {
   try {
@@ -39,7 +38,7 @@ router.get("/:id", authMiddleware, async (req, res) => {
 
 router.post("/", authMiddleware, async (req, res) => {
   try {
-    if (isLibrarian(req.user.userId)) {
+    if (req.user.userType === 'Librarian') {
       const book = await Book(req.body);
       await book.save();
     } else {
@@ -56,7 +55,7 @@ router.post("/", authMiddleware, async (req, res) => {
 
 router.put("/:id", authMiddleware, async (req, res) => {
   try {
-    if (isLibrarian(req.user.userId)) {
+    if (req.user.userType === 'Librarian') {
       const book = await Book.findByIdAndUpdate(req.params.id, req.body, {
         new: true,
       });
@@ -80,7 +79,7 @@ router.put("/:id", authMiddleware, async (req, res) => {
 
 router.delete("/:id", authMiddleware, async (req, res) => {
   try {
-    if (isLibrarian(req.user.userId)) {
+    if (req.user.userType === 'Librarian') {
       const book = await Book.findByIdAndDelete(req.params.id);
 
       if (!book) {

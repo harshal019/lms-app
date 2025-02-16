@@ -10,17 +10,17 @@ const registerUser =async(req,res)=>{
         
         const{name,username,email,password,userType}=req.body;
 
-        const userExist= await User.find({username});
+        const userExist= await User.findOne({username});
         if(userExist){
-            return res.status(400).json({
-                message:"User already exist",
+            return res.status(404).json({
+                message:"Username  already exist",
             })
         }
 
-        const userEmail=await User.find({email});
+        const userEmail=await User.findOne({email});
         if(userEmail){
-            return res.status(400).json({
-                message:"User already exist",
+            return res.status(401).json({
+                message:"User  Email already exist",
             })
         }
 
@@ -72,7 +72,7 @@ const loginUser=async(req,res)=>{
             });
         }
 
-        const token=jwt.sign({userId:user._id,username:user.username},process.env.SECRET_KEY,{expiresIn:"1hr"});
+        const token=jwt.sign({userId:user._id,username:user.username,userType:user.userType},process.env.SECRET_KEY,{expiresIn:"1hr"});
 
         res.status(200).json*({
             message:"token genrated successful",

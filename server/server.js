@@ -2,12 +2,17 @@ const express=require("express");
 const app=express();
 const {dbConnect}=require("../server/config/connectDB");
 const userRouter=require("../server/routes/userRouter");
+const bookRouter=require("../server/routes/bookRouter");
+const issuedBookRouter=require("../server/routes/issueBookRouter");
 require("dotenv").config();
 
 const db = dbConnect();
 app.use(express.json());
 
-app.use("/api/v1",userRouter);
+app.use("/user",userRouter);
+app.use("/book",bookRouter);
+app.use("/issedBook",issuedBookRouter);
+
 
 
 
