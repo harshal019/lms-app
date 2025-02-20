@@ -1,1 +1,1 @@
-# lms-app
+# This is Library Manangement System
