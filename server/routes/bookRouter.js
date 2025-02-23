@@ -41,6 +41,7 @@ router.post("/", authMiddleware, async (req, res) => {
     if (req.user.userType === 'Librarian') {
       const book = await Book(req.body);
       await book.save();
+      res.status(200).json({message:"Book Added Sucessfully", book:book})
     } else {
       return res
         .status(404)

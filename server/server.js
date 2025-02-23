@@ -13,7 +13,9 @@ app.use(express.json());
 app.use(bodyParser.json());
 app.use(cors({
     origin:"http://localhost:5173",
-    optionSuccessStatus:200
+    optionSuccessStatus:200,
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true, // Allow cookies if needed
 }));
 
 

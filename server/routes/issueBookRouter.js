@@ -8,7 +8,7 @@ const { param } = require("./userRouter");
 
 router.post("/issue-book", authMidddleware, async (req, res) => {
   try {
-    if (isLibrarian === req.user.userId) {
+    if (req.user.userType === 'Librarian') {
       //get the data
       const {
         studentId,
@@ -47,7 +47,7 @@ router.post("/issue-book", authMidddleware, async (req, res) => {
       book.quantity -= 1;
       await book.save();
 
-      return res.status(200).json(issuedBook);
+      return res.status(200).json({message:"book issued Sucessfully",issuedBook});
     } else {
       return res
         .status(404)
@@ -61,15 +61,15 @@ router.post("/issue-book", authMidddleware, async (req, res) => {
   }
 });
 
-router.post("/return-book/:id", authMidddleware, async (req, res) => {
+router.post("/return-book/:id", authMidddleware, async (req,res) => {
   try {
-    if (isLibrarian(req.user.userId)) {
+    if (req.user.userType === 'Librarian') {
         
         //get the id of the book
         const{id}=req.params;
 
         //find the issued book
-        const issuedBook =await Book.findById(id);
+        const issuedBook =await IssueBook.findById(id);
 
         //if issued book not existed
         if(!issuedBook){
@@ -79,7 +79,7 @@ router.post("/return-book/:id", authMidddleware, async (req, res) => {
         //if book returned once then => do not return the book again
         if(issuedBook.status == "Returned"){
             return res.status(404).json({
-                message:"Book ha already taken"
+                message:"Book already taken"
             })
         }
 
@@ -101,7 +101,7 @@ router.post("/return-book/:id", authMidddleware, async (req, res) => {
         book.save();
 
 
-        return res.status(200).json(issuedBook);
+        return res.status(200).json({message:"book returned Sucessfully",issuedBook});
         
     } else {
       return res
@@ -150,7 +150,7 @@ router.get("/:id",async(req,res)=>{
     }
 })
 
-router.get("/stduent-name/:stuentName",async(req,res)=>{
+router.get("/student-name/:studentName",async(req,res)=>{
 
     try {
         
@@ -166,7 +166,7 @@ router.get("/stduent-name/:stuentName",async(req,res)=>{
     }
 })
 
-router.get("/stduent-id/:stuentId",async(req,res)=>{
+router.get("/student-id/:studentId",async(req,res)=>{
 
     try {
         

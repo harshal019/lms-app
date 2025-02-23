@@ -111,4 +111,22 @@ const getuser=async(req,res)=>{
 }
 
 
-module.exports={registerUser,loginUser,getuser};
+const getStudent =async(req,res)=>{
+    try {
+        
+        const students=await User.find({userType:'Student'});
+
+         res.status(200).json(students);
+
+
+
+
+    } catch (error) {
+         res.status(400).json({
+            error:error.message,
+            message:"Something while fectching students  data"
+        });  
+    }
+}
+
+module.exports={registerUser,loginUser,getuser,getStudent};

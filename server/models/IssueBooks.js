@@ -14,6 +14,10 @@ const issueBookSchema=new mongoose.Schema({
         type:'String',
         require:true
     },
+    bookName:{
+        type:'String',
+        require:true,
+    },
     issueDate:{
         type:Date,
         require:true
@@ -24,7 +28,7 @@ const issueBookSchema=new mongoose.Schema({
     },
     status:{
         type:'String',
-        enum:['Librarian','Student']
+        enum:['Returned','Pending']
     }
 })
 
